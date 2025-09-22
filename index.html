@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist Kunjungan Rumah - Usia Dewasa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+        }
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #3b82f6;
+        }
+        .section-title {
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            background: #f9fafb;
+        }
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 0.5rem;
+            transform: scale(1.2);
+        }
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .radio-item:hover {
+            border-color: #3b82f6;
+            background: #f0f9ff;
+        }
+        .radio-item input[type="radio"]:checked + label {
+            color: #1e40af;
+            font-weight: 600;
+        }
+        .radio-item input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .success-message {
+            background: #10b981;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+        .error-message {
+            background: #ef4444;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">CHECKLIST KUNJUNGAN RUMAH</h1>
+            <h2 class="text-xl text-blue-600 font-semibold">USIA DEWASA (≥ 18 - 59 TAHUN)</h2>
+            <p class="text-gray-600 mt-2">Lengkapi data di bawah ini dengan memberikan tanda centang (√) jika YA dan tanda silang (X) jika TIDAK</p>
+        </div>
+
+        <form id="checklistForm">
+            <!-- Data Pribadi -->
+            <div class="form-section">
+                <h3 class="section-title">📋 Data Pribadi</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="input-group">
+                        <label for="namaLengkap">Nama Lengkap *</label>
+                        <input type="text" id="namaLengkap" name="namaLengkap" class="form-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="tanggalLahir">Tanggal Lahir *</label>
+                        <input type="date" id="tanggalLahir" name="tanggalLahir" class="form-input" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Jenis Kelamin *</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="lakiLaki" name="jenisKelamin" value="Laki-laki" required>
+                            <label for="lakiLaki">Laki-laki</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="perempuan" name="jenisKelamin" value="Perempuan" required>
+                            <label for="perempuan">Perempuan</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Riwayat Penyakit -->
+            <div class="form-section">
+                <h3 class="section-title">🏥 Riwayat Penyakit</h3>
+                <div class="input-group">
+                    <label>Riwayat Penyakit Keluarga</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keluargaHipertensi" name="riwayatKeluarga" value="Hipertensi">
+                            <label for="keluargaHipertensi">Hipertensi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keluargaDM" name="riwayatKeluarga" value="Diabetes Mellitus">
+                            <label for="keluargaDM">Diabetes Mellitus</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keluargaStroke" name="riwayatKeluarga" value="Stroke">
+                            <label for="keluargaStroke">Stroke</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keluargaJantung" name="riwayatKeluarga" value="Jantung">
+                            <label for="keluargaJantung">Jantung</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keluargaAsma" name="riwayatKeluarga" value="Asma">
+                            <label for="keluargaAsma">Asma</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keluargaKolesterol" name="riwayatKeluarga" value="Kolesterol Tinggi">
+                            <label for="keluargaKolesterol">Kolesterol Tinggi</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Riwayat Penyakit Pribadi</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pribadiHipertensi" name="riwayatPribadi" value="Hipertensi">
+                            <label for="pribadiHipertensi">Hipertensi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pribadiDM" name="riwayatPribadi" value="Diabetes Mellitus">
+                            <label for="pribadiDM">Diabetes Mellitus</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pribadiStroke" name="riwayatPribadi" value="Stroke">
+                            <label for="pribadiStroke">Stroke</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pribadiJantung" name="riwayatPribadi" value="Jantung">
+                            <label for="pribadiJantung">Jantung</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pribadiAsma" name="riwayatPribadi" value="Asma">
+                            <label for="pribadiAsma">Asma</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="pribadiKolesterol" name="riwayatPribadi" value="Kolesterol Tinggi">
+                            <label for="pribadiKolesterol">Kolesterol Tinggi</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kunjungan -->
+            <div class="form-section">
+                <h3 class="section-title">📅 Data Kunjungan</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="input-group">
+                        <label>Waktu Kunjungan *</label>
+                        <select name="waktuKunjungan" class="form-input" required>
+                            <option value="">Pilih Kunjungan</option>
+                            <option value="Kunjungan 1">Kunjungan 1</option>
+                            <option value="Kunjungan 2">Kunjungan 2</option>
+                            <option value="Kunjungan 3">Kunjungan 3</option>
+                            <option value="Kunjungan 4">Kunjungan 4</option>
+                            <option value="Kunjungan 5">Kunjungan 5</option>
+                            <option value="Kunjungan 6">Kunjungan 6</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="tanggalKunjungan">Tanggal Kunjungan *</label>
+                        <input type="date" id="tanggalKunjungan" name="tanggalKunjungan" class="form-input" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Skrining Demam *</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="demamNormal" name="skriningDemam" value="<37,5°C" required>
+                            <label for="demamNormal">&lt;37,5°C</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="demamTinggi" name="skriningDemam" value=">37,5°C" required>
+                            <label for="demamTinggi">&gt;37,5°C</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skrining Status Gizi -->
+            <div class="form-section">
+                <h3 class="section-title">⚖️ Skrining Status Gizi</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="input-group">
+                        <label for="tanggalGizi">Tanggal</label>
+                        <input type="date" id="tanggalGizi" name="tanggalGizi" class="form-input">
+                    </div>
+                    <div class="input-group">
+                        <label for="tempatGizi">Tempat</label>
+                        <input type="text" id="tempatGizi" name="tempatGizi" class="form-input">
+                    </div>
+                    <div class="input-group">
+                        <label>Hasil</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="giziNormal" name="hasilGizi" value="Normal">
+                                <label for="giziNormal">Normal</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="giziTidak" name="hasilGizi" value="Tidak Normal">
+                                <label for="giziTidak">Tidak Normal</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skrining Indera -->
+            <div class="form-section">
+                <h3 class="section-title">👁️ Skrining Indera (6 bulan terakhir)</h3>
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-3">Skrining Penglihatan</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label for="tanggalPenglihatan">Tanggal</label>
+                            <input type="date" id="tanggalPenglihatan" name="tanggalPenglihatan" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatPenglihatan">Tempat</label>
+                            <input type="text" id="tempatPenglihatan" name="tempatPenglihatan" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Hasil</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="penglihatanNormal" name="hasilPenglihatan" value="Normal">
+                                    <label for="penglihatanNormal">Normal</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="penglihatanTidak" name="hasilPenglihatan" value="Tidak Normal">
+                                    <label for="penglihatanTidak">Tidak Normal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Skrining Pendengaran</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label for="tanggalPendengaran">Tanggal</label>
+                            <input type="date" id="tanggalPendengaran" name="tanggalPendengaran" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatPendengaran">Tempat</label>
+                            <input type="text" id="tempatPendengaran" name="tempatPendengaran" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Hasil</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="pendengaranNormal" name="hasilPendengaran" value="Normal">
+                                    <label for="pendengaranNormal">Normal</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="pendengaranTidak" name="hasilPendengaran" value="Tidak Normal">
+                                    <label for="pendengaranTidak">Tidak Normal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pemeriksaan Kesehatan -->
+            <div class="form-section">
+                <h3 class="section-title">🩺 Pemeriksaan Kesehatan</h3>
+                
+                <!-- Tekanan Darah -->
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-3">Riwayat Pemeriksaan Tekanan Darah</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label for="tanggalTensi">Tanggal</label>
+                            <input type="date" id="tanggalTensi" name="tanggalTensi" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatTensi">Tempat</label>
+                            <input type="text" id="tempatTensi" name="tempatTensi" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Hasil</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="tensiNormal" name="hasilTensi" value="Normal">
+                                    <label for="tensiNormal">Normal</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="tensiTidak" name="hasilTensi" value="Tidak Normal">
+                                    <label for="tensiTidak">Tidak Normal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gula Darah -->
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-3">Riwayat Skrining Gula Darah</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label for="tanggalGulaDarah">Tanggal</label>
+                            <input type="date" id="tanggalGulaDarah" name="tanggalGulaDarah" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatGulaDarah">Tempat</label>
+                            <input type="text" id="tempatGulaDarah" name="tempatGulaDarah" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Hasil</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="gulaDarahNormal" name="hasilGulaDarah" value="Normal">
+                                    <label for="gulaDarahNormal">Normal</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="gulaDarahTidak" name="hasilGulaDarah" value="Tidak Normal">
+                                    <label for="gulaDarahTidak">Tidak Normal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PPOK/PUMA -->
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-3">Riwayat Skrining PPOK/PUMA (perokok usia >40 tahun)</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label for="tanggalPPOK">Tanggal</label>
+                            <input type="date" id="tanggalPPOK" name="tanggalPPOK" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatPPOK">Tempat</label>
+                            <input type="text" id="tempatPPOK" name="tempatPPOK" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Hasil</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="ppokNormal" name="hasilPPOK" value="Normal">
+                                    <label for="ppokNormal">Normal</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="ppokTidak" name="hasilPPOK" value="Tidak Normal">
+                                    <label for="ppokTidak">Tidak Normal</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kesehatan Jiwa -->
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Riwayat Skrining Kesehatan Jiwa</h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label for="tanggalJiwa">Tanggal</label>
+                            <input type="date" id="tanggalJiwa" name="tanggalJiwa" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatJiwa">Tempat</label>
+                            <input type="text" id="tempatJiwa" name="tempatJiwa" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label>Hasil</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="jiwaNormal" name="hasilJiwa" value="Normal">
+                                    <label for="jiwaNormal">Normal</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="jiwaRujuk" name="hasilJiwa" value="Riwayat Rujuk">
+                                    <label for="jiwaRujuk">Riwayat Rujuk</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skrining Kanker (Wanita) -->
+            <div class="form-section" id="skriningKanker" style="display: none;">
+                <h3 class="section-title">🎗️ Skrining Kanker (Khusus Wanita)</h3>
+                <div class="mb-4">
+                    <h4 class="font-semibold text-gray-700 mb-3">Skrining Kanker Payudara</h4>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="benjolanAda" name="kankerPayudara" value="Ada Benjolan">
+                            <label for="benjolanAda">Ada Benjolan</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="benjolanTidak" name="kankerPayudara" value="Tidak Ada Benjolan">
+                            <label for="benjolanTidak">Tidak Ada Benjolan</label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Skrining Kanker Serviks (Sudah menikah, usia 35-59 tahun)</h4>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label>Pernah Periksa IVA/PAPSMEAR/HPPDNA</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="serviksPernah" name="kankerServiks" value="Ya">
+                                    <label for="serviksPernah">Ya</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="serviksBelum" name="kankerServiks" value="Tidak">
+                                    <label for="serviksBelum">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="terakhirPeriksa">Terakhir Periksa</label>
+                            <input type="date" id="terakhirPeriksa" name="terakhirPeriksa" class="form-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kepatuhan Pengobatan -->
+            <div class="form-section">
+                <h3 class="section-title">💊 Kepatuhan Pengobatan</h3>
+                
+                <!-- Hipertensi -->
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-3">Kepatuhan Pengobatan Hipertensi</h4>
+                    <div class="grid md:grid-cols-3 gap-4 mb-3">
+                        <div class="input-group">
+                            <label for="tanggalDiagnosaTensi">Tanggal Diagnosa</label>
+                            <input type="date" id="tanggalDiagnosaTensi" name="tanggalDiagnosaTensi" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatDiagnosaTensi">Tempat</label>
+                            <input type="text" id="tempatDiagnosaTensi" name="tempatDiagnosaTensi" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="hasilDiagnosaTensi">Hasil</label>
+                            <input type="text" id="hasilDiagnosaTensi" name="hasilDiagnosaTensi" class="form-input" placeholder="TD Sistolik">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label>Kontrol Setiap Bulan</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="kontrolTensiYa" name="kontrolTensi" value="Ya">
+                                    <label for="kontrolTensiYa">Ya</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="kontrolTensiTidak" name="kontrolTensi" value="Tidak">
+                                    <label for="kontrolTensiTidak">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Sudah Minum Obat Hari Ini/24 Jam Terakhir</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="minumTensiYa" name="minumTensi" value="Ya">
+                                    <label for="minumTensiYa">Ya</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="minumTensiTidak" name="minumTensi" value="Tidak">
+                                    <label for="minumTensiTidak">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diabetes Mellitus -->
+                <div class="mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-3">Kepatuhan Pengobatan Diabetes Mellitus</h4>
+                    <div class="grid md:grid-cols-3 gap-4 mb-3">
+                        <div class="input-group">
+                            <label for="tanggalDiagnosaDM">Tanggal Diagnosa</label>
+                            <input type="date" id="tanggalDiagnosaDM" name="tanggalDiagnosaDM" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatDiagnosaDM">Tempat</label>
+                            <input type="text" id="tempatDiagnosaDM" name="tempatDiagnosaDM" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="hasilDiagnosaDM">Hasil</label>
+                            <input type="text" id="hasilDiagnosaDM" name="hasilDiagnosaDM" class="form-input" placeholder="Kadar Gula Darah">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="input-group">
+                            <label>Kontrol Setiap Bulan</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="kontrolDMYa" name="kontrolDM" value="Ya">
+                                    <label for="kontrolDMYa">Ya</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="kontrolDMTidak" name="kontrolDM" value="Tidak">
+                                    <label for="kontrolDMTidak">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Sudah Minum Obat Hari Ini/24 Jam Terakhir</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="minumDMYa" name="minumDM" value="Ya">
+                                    <label for="minumDMYa">Ya</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="minumDMTidak" name="minumDM" value="Tidak">
+                                    <label for="minumDMTidak">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="namaObatDM">Nama Obat</label>
+                            <input type="text" id="namaObatDM" name="namaObatDM" class="form-input" placeholder="Catat nama obat">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kesehatan Jiwa -->
+                <div>
+                    <h4 class="font-semibold text-gray-700 mb-3">Kepatuhan Kesehatan Jiwa</h4>
+                    <div class="grid md:grid-cols-3 gap-4 mb-3">
+                        <div class="input-group">
+                            <label for="tanggalPemeriksaanJiwa">Tanggal Pemeriksaan</label>
+                            <input type="date" id="tanggalPemeriksaanJiwa" name="tanggalPemeriksaanJiwa" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="tempatPemeriksaanJiwa">Tempat</label>
+                            <input type="text" id="tempatPemeriksaanJiwa" name="tempatPemeriksaanJiwa" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="hasilPemeriksaanJiwa">Hasil</label>
+                            <input type="text" id="hasilPemeriksaanJiwa" name="hasilPemeriksaanJiwa" class="form-input">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label>Ada Obat/Terapi</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="obatJiwaAda" name="obatJiwa" value="Ada">
+                                    <label for="obatJiwaAda">Ada</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="obatJiwaTidak" name="obatJiwa" value="Tidak">
+                                    <label for="obatJiwaTidak">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Minum Obat/Terapi Teratur</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="terapiTeraturYa" name="terapiTeratur" value="Ya">
+                                    <label for="terapiTeraturYa">Ya</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="terapiTeraturTidak" name="terapiTeratur" value="Tidak">
+                                    <label for="terapiTeraturTidak">Tidak</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perilaku dan Gaya Hidup -->
+            <div class="form-section">
+                <h3 class="section-title">🚭 Perilaku dan Gaya Hidup</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="input-group">
+                        <label>Kontrasepsi yang Digunakan</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="kontrasepsiPil" name="kontrasepsi" value="Pil">
+                                <label for="kontrasepsiPil">Pil</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="kontrasepsiKondom" name="kontrasepsi" value="Kondom">
+                                <label for="kontrasepsiKondom">Kondom</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="kontrasepsiSuntik" name="kontrasepsi" value="Suntik">
+                                <label for="kontrasepsiSuntik">Suntik</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="kontrasepsiImplan" name="kontrasepsi" value="Implan/Susuk">
+                                <label for="kontrasepsiImplan">Implan/Susuk</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="kontrasepsiLainnya" name="kontrasepsi" value="Lainnya">
+                                <label for="kontrasepsiLainnya">Lainnya</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Perilaku Merokok</label>
+                        <div class="radio-group">
+                            <div class="radio-item">
+                                <input type="radio" id="merokokAktif" name="perilakuMerokok" value="Aktif">
+                                <label for="merokokAktif">Aktif</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="merokokPasif" name="perilakuMerokok" value="Pasif">
+                                <label for="merokokPasif">Pasif</label>
+                            </div>
+                            <div class="radio-item">
+                                <input type="radio" id="merokokTidak" name="perilakuMerokok" value="Tidak">
+                                <label for="merokokTidak">Tidak</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Isi Piringku (Keragaman Gizi: Makanan Pokok, Lauk Pauk, Sayur dan Buah)</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="giziSesuai" name="isiPiringku" value="Sesuai">
+                            <label for="giziSesuai">Sesuai</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="giziTidakSesuai" name="isiPiringku" value="Tidak Sesuai">
+                            <label for="giziTidakSesuai">Tidak Sesuai</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tindakan Kader -->
+            <div class="form-section">
+                <h3 class="section-title">👥 Tindakan Kader</h3>
+                <div class="input-group">
+                    <label>Tindakan yang Dilakukan</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakanApresiasi" name="tindakanKader" value="Apresiasi">
+                            <label for="tindakanApresiasi">Apresiasi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakanEdukasi" name="tindakanKader" value="Edukasi">
+                            <label for="tindakanEdukasi">Edukasi</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="tindakanRujukan" name="tindakanKader" value="Rujukan">
+                            <label for="tindakanRujukan">Rujukan</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="catatanTambahan">Catatan Tambahan</label>
+                    <textarea id="catatanTambahan" name="catatanTambahan" class="form-input" rows="3" placeholder="Catatan atau keterangan tambahan..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                📤 Kirim Data ke Spreadsheet
+            </button>
+
+            <div id="successMessage" class="success-message">
+                ✅ Data berhasil dikirim ke spreadsheet!
+            </div>
+            <div id="errorMessage" class="error-message">
+                ❌ Terjadi kesalahan. Silakan coba lagi.
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // URL Google Apps Script Web App - SUDAH TERHUBUNG
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw80jQ9GwRarVUHPcJCAIGwP6nvplIa2_52cwbvY1_lZdsgrBP4crIFH5lLW5HEtTt-Dg/exec';
+
+        // Show/hide cancer screening section based on gender
+        document.querySelectorAll('input[name="jenisKelamin"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const skriningKanker = document.getElementById('skriningKanker');
+                if (this.value === 'Perempuan') {
+                    skriningKanker.style.display = 'block';
+                } else {
+                    skriningKanker.style.display = 'none';
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('checklistForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Reset messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '⏳ Mengirim data...';
+            
+            try {
+                // Collect form data
+                const formData = new FormData(this);
+                const data = {};
+                
+                // Handle regular form fields
+                for (let [key, value] of formData.entries()) {
+                    if (data[key]) {
+                        // Handle multiple values (checkboxes)
+                        if (Array.isArray(data[key])) {
+                            data[key].push(value);
+                        } else {
+                            data[key] = [data[key], value];
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                }
+                
+                // Convert arrays to comma-separated strings
+                Object.keys(data).forEach(key => {
+                    if (Array.isArray(data[key])) {
+                        data[key] = data[key].join(', ');
+                    }
+                });
+                
+                // Add timestamp
+                data.timestamp = new Date().toLocaleString('id-ID');
+                
+                console.log('Sending data:', data);
+                
+                // Send to Google Apps Script
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                // Show success message (no-cors mode doesn't return response)
+                successMessage.style.display = 'block';
+                console.log('Data sent successfully');
+                
+                // Reset form after successful submission
+                setTimeout(() => {
+                    this.reset();
+                    successMessage.style.display = 'none';
+                    // Hide cancer screening section after reset
+                    document.getElementById('skriningKanker').style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                errorMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '📤 Kirim Data ke Spreadsheet';
+            }
+        });
+
+        // Set today's date as default for visit date
+        document.getElementById('tanggalKunjungan').valueAsDate = new Date();
+        
+        // Auto-fill some dates with today's date when focused (optional)
+        document.querySelectorAll('input[type="date"]').forEach(dateInput => {
+            dateInput.addEventListener('focus', function() {
+                if (!this.value) {
+                    this.valueAsDate = new Date();
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98169fdb57eafd6c',t:'MTc1ODI1OTEyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
